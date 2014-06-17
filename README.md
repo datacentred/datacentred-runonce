@@ -1,4 +1,4 @@
 datacentred-runonce
 ===================
 
-Utility class for handling exec's in  puppet
+Utility define for handling exec's in  puppet
