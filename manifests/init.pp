@@ -1,22 +1,41 @@
-# Define: runonce
+# === Define: runonce
 #
 # Utility define to handle flag files for exec
 #
-# Parameters:
+# === Parameters
 #
-# Actions:
+# [*command*]
+#   The command to execute
 #
-# Requires:
+# [*persistent*]
+#   Will the run once semantic persist across reboots
 #
-# Sample Usage:
+# [*persistent_dir*]
+#   Directory containing perisistent semaphores
 #
-define runonce ( $command, $refreshonly = undef ) {
+# === Examples
+#
+# runonce { 'hello-world':
+#   command => 'echo hello world!',
+# }
+#
+# runonce { 'init-modules':
+#   command    => 'service kmod start',
+#   persistent => false,
+# }
+#
+define runonce (
+  $command,
+  $persistent     = true,
+  $persistent_dir = '/var/lib/puppet/semaphores'
+) {
 
-  $semaphore_dir = '/var/lib/puppet/semaphores'
+  # Ensure this particular persistent semaphore
+  # directory is only defined once
+  if ! defined( File[$persistent_dir] ) {
 
-  if ! defined( File[$semaphore_dir] ) {
-
-    file { $semaphore_dir:
+    # TODO: parent directory creation is not supported
+    file { $persistent_dir:
       ensure => directory,
       owner  => 'root',
       group  => 'root',
@@ -25,18 +44,27 @@ define runonce ( $command, $refreshonly = undef ) {
 
   }
 
+  # Select which directory to place the semaphore
+  # in to.  By deafult non-persistent semaphores reside
+  # in /tmp which is assumed to be cleaned at boot by the
+  # operating system
+  if $persistent {
+    $semaphore = "${persistent_dir}/${title}"
+  } else {
+    $semaphore = "/tmp/puppet-semaphore-${title}"
+  }
+
   exec { $command:
-    unless      => "ls ${semaphore_dir}/${title}",
+    unless      => "ls ${semaphore}",
     path        => '/bin:/usr/bin:/sbin:/usr/sbin',
-    require     => File[$semaphore_dir],
-    refreshonly => $refreshonly,
+    require     => File[$persistent_dir],
   } ~>
 
-  file { "${semaphore_dir}/${title}":
+  file { $semaphore:
     ensure => file,
     owner  => 'root',
     group  => 'root',
-    mode   => '0755',
+    mode   => '0644',
   }
 
 }
