@@ -1,0 +1,13 @@
+{
+  "name": "datacentred-runonce",
+  "version": "1.0.0",
+  "author": "DataCentred Ltd",
+  "summary": "Module to execute commands once",
+  "license": "Apache License, Version 2.0",
+  "source": "git://github.com/datacentred/datacentred-runonce.git",
+  "project_page": "https://github.com/datacentred/datacentred-runonce",
+  "issues_url": "https://github.com/datacentred/datacentred-runonce/issues",
+  "description": "Executes a command once ever, or once per reboot",
+  "dependencies": []
+}
+
