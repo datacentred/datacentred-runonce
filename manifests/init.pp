@@ -54,10 +54,11 @@ define runonce (
     $semaphore = "/tmp/puppet-semaphore-${title}"
   }
 
-  exec { $command:
-    unless      => "ls ${semaphore}",
-    path        => '/bin:/usr/bin:/sbin:/usr/sbin',
-    require     => File[$persistent_dir],
+  exec { $name:
+    command => "$command",
+    unless  => "ls ${semaphore}",
+    path    => '/bin:/usr/bin:/sbin:/usr/sbin',
+    require => File[$persistent_dir],
   } ~>
 
   file { $semaphore:
