@@ -26,6 +26,8 @@
 #
 define runonce (
   $command,
+  $user = undef,
+  $cwd = undef,
   $timeout = 200,
   $persistent     = true,
   $persistent_dir = '/var/lib/puppet/semaphores'
@@ -57,9 +59,10 @@ define runonce (
 
   exec { $name:
     command => $command,
+    user    => $user,
+    cwd     => $cwd,
     timeout => $timeout,
     unless  => "ls ${semaphore}",
-    path    => '/bin:/usr/bin:/sbin:/usr/sbin',
     require => File[$persistent_dir],
   } ~>
 
