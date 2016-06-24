@@ -62,9 +62,9 @@ define runonce (
     user    => $user,
     cwd     => $cwd,
     timeout => $timeout,
-    unless  => "ls ${semaphore}",
+    creates => $semaphore,
     require => File[$persistent_dir],
-  } ~>
+  } ->
 
   file { $semaphore:
     ensure => file,
