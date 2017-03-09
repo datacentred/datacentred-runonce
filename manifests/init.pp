@@ -30,7 +30,7 @@ define runonce (
   $cwd = undef,
   $timeout = 200,
   $persistent     = true,
-  $persistent_dir = '/var/lib/puppet/semaphores'
+  $persistent_dir = '/etc/puppetlabs/puppet/semaphores'
 ) {
 
   # Ensure this particular persistent semaphore
