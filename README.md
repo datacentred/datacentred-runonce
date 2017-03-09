@@ -1,4 +1,4 @@
-#Run Once
+# Run Once
 
 #### Table of Contents
 
@@ -12,9 +12,9 @@
 
 The run once module is a wrapper around exec.  It ensures that a command is only ever executed once without having to explitily specifying $onlyif or $unless parameters.
 
-##Module Description
+## Module Description
 
-The underlying implmentation uses semaphore lock files to control whether or not to run a command.  An optional semaphore directory is created if it did not already exist, the command executed and the semaphore created upon success.  Semaphores can either be persistent, by default residing in /var/lib/puppet/semaphores, or transient, residing in /tmp, and thus the command will be executed once per reboot.
+The underlying implmentation uses semaphore lock files to control whether or not to run a command.  An optional semaphore directory is created if it did not already exist, the command executed and the semaphore created upon success.  Semaphores can either be persistent, by default residing in `/etc/puppetlabs/puppet/semaphores, or transient, residing in /tmp, and thus the command will be executed once per reboot.
 
 ## Usage
 
